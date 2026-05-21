@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/context/i18n";
+import { Logo } from "@/components/Logo";
 
 function LangToggle() {
   const { lang, setLang } = useI18n();
@@ -85,13 +86,12 @@ export function Navbar() {
           }}
           className="flex items-center cursor-pointer group"
         >
-          <motion.img
-            src="/agento-logo.png"
-            alt="Agento"
-            className="h-14 w-auto object-contain"
+          <motion.div
             whileHover={{ scale: 1.04 }}
             transition={{ duration: 0.2 }}
-          />
+          >
+            <Logo size="lg" />
+          </motion.div>
         </a>
 
         <div
@@ -102,7 +102,7 @@ export function Navbar() {
               key={key}
               href={`#${id}`}
               onClick={(e) => handleDesktopClick(e, id)}
-              className="text-xs text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer tracking-widest uppercase"
+              className="text-sm text-gray-400 hover:text-white transition-colors duration-200 cursor-pointer tracking-widest uppercase"
             >
               {t(key) as string}
             </a>

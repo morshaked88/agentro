@@ -1,6 +1,7 @@
 'use client'
 
 import { useI18n } from '@/context/i18n'
+import { Logo } from '@/components/Logo'
 
 function LangToggle() {
   const { lang, setLang } = useI18n()
@@ -48,11 +49,7 @@ export function Footer() {
         >
           {/* Logo + tagline */}
           <div className="flex flex-col items-center md:items-start gap-3">
-            <img
-              src="/agento-logo.png"
-              alt="Agentro"
-              className="h-10 w-auto object-contain opacity-80"
-            />
+            <Logo size="md" className="opacity-80" />
             <p className="text-white/40 text-xs font-mono tracking-wider max-w-xs text-center md:text-start">
               {t('footer.tagline') as string}
             </p>
