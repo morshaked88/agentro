@@ -62,7 +62,7 @@ export function About() {
   return (
     <section id="about" className="relative min-h-screen flex flex-col justify-center py-24 overflow-hidden">
       {/* Video overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/65 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/55 to-black/70 pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(59,130,246,0.05),transparent)] pointer-events-none" />
 
       {/* Subtle dot grid overlay */}
@@ -75,6 +75,7 @@ export function About() {
       />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full" dir={dir}>
+        <div className="bg-black/50 backdrop-blur-md rounded-2xl px-8 py-10 lg:px-12 border border-white/[0.07]">
 
         {/* Section marker + title row */}
         <div ref={headRef}>
@@ -103,7 +104,7 @@ export function About() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={headInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-white/60 text-base leading-relaxed mb-8"
+                className="text-white/80 text-base leading-relaxed mb-8"
               >
                 {t('about.text') as string}
               </motion.p>
@@ -117,10 +118,10 @@ export function About() {
               >
                 <div className="w-[2px] flex-shrink-0 rounded-full bg-gradient-to-b from-blue-500 to-amber-500" />
                 <div>
-                  <p className="text-white/40 text-[10px] uppercase tracking-[0.2em] font-mono mb-2">
+                  <p className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-mono mb-2">
                     {dir === 'rtl' ? 'החזון שלנו' : 'Our Vision'}
                   </p>
-                  <p className="text-white/75 text-sm md:text-base leading-relaxed italic">
+                  <p className="text-white/90 text-sm md:text-base leading-relaxed italic">
                     "{t('about.vision') as string}"
                   </p>
                 </div>
@@ -143,13 +144,14 @@ export function About() {
                   >
                     <div className="mb-3">{VALUE_ICONS[i]}</div>
                     <h3 className="font-display text-sm font-bold text-white mb-2">{v.title}</h3>
-                    <p className="text-white/50 text-xs leading-relaxed">{v.desc}</p>
+                    <p className="text-white/75 text-xs leading-relaxed">{v.desc}</p>
                   </MovingBorderCard>
                 </motion.div>
               ))}
             </div>
           </div>
         </div>
+        </div>{/* end dark panel */}
 
       </div>
     </section>

@@ -155,7 +155,7 @@ export function ServiceSection({ id, phase, accent, align = 'left' }: Props) {
               drop-shadow-[0_0_20px_${isBlue ? 'rgba(59,130,246,0.5)' : 'rgba(245,158,11,0.5)'}]`}>
               {s.val}
             </p>
-            <p className="text-white/65 text-[11px] uppercase tracking-wider font-mono">{s.lbl}</p>
+            <p className="text-white/80 text-[11px] uppercase tracking-wider font-mono">{s.lbl}</p>
           </motion.div>
         ))}
       </div>
@@ -178,7 +178,7 @@ export function ServiceSection({ id, phase, accent, align = 'left' }: Props) {
               <div className={`mt-0.5 ${accentText} flex-shrink-0`}>{cap.icon}</div>
               <div>
                 <p className="text-white text-sm font-semibold mb-1">{cap.title}</p>
-                <p className="text-white/55 text-xs leading-relaxed">{cap.desc}</p>
+                <p className="text-white/75 text-xs leading-relaxed">{cap.desc}</p>
               </div>
             </div>
           </MovingBorderCard>
@@ -216,7 +216,7 @@ export function ServiceSection({ id, phase, accent, align = 'left' }: Props) {
             <div
               key={tech}
               className="border border-amber-500/20 bg-amber-500/[0.04] rounded-lg py-2 px-1
-                text-center text-white/65 text-[11px] font-mono"
+                text-center text-white/80 text-[11px] font-mono"
             >
               {tech}
             </div>
@@ -232,7 +232,7 @@ export function ServiceSection({ id, phase, accent, align = 'left' }: Props) {
       className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden"
     >
       {/* Video overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/15 to-black/55 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/40 to-black/60 pointer-events-none" />
       <div
         className={`absolute inset-0 pointer-events-none ${
           isBlue
@@ -255,6 +255,7 @@ export function ServiceSection({ id, phase, accent, align = 'left' }: Props) {
 
       <div ref={ref} className="relative z-10 max-w-6xl mx-auto px-6 w-full" dir={dir}>
         <div className={`grid md:grid-cols-2 gap-10 lg:gap-16 items-center
+          bg-black/50 backdrop-blur-md rounded-2xl px-8 py-10 lg:px-12 border border-white/[0.07]
           ${align === 'right' ? 'md:[&>*:first-child]:order-2' : ''}`}>
           {contentCol}
           {visualCol}

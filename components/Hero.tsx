@@ -40,8 +40,8 @@ export function Hero() {
       className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-16 overflow-hidden"
     >
       {/* Video vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/85 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(0,0,0,0.45),transparent)] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(0,0,0,0.60),transparent)] pointer-events-none" />
 
       {/* Aceternity spotlight */}
       <div
@@ -97,7 +97,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.65 }}
-          className="text-white/55 text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed"
+          className="text-white/75 text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
         >
           {t('hero.sub') as string}
         </motion.p>
