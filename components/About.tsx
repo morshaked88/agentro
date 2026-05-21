@@ -83,7 +83,7 @@ export function About() {
             initial={{ opacity: 0, y: 14 }}
             animate={headInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-3 mb-8"
+            className="flex items-center gap-3 mb-8 justify-center md:justify-start"
           >
             <span className="text-amber-400/80 text-xs font-mono tracking-widest">/ 03</span>
             <div className="flex-1 h-px bg-gradient-to-r from-amber-500/40 to-transparent" />
@@ -96,36 +96,39 @@ export function About() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={headInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.65, delay: 0.1 }}
-                className="font-display text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6"
+                className="font-display text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6 text-center md:text-start"
               >
                 {t('about.title') as string}
               </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={headInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-white/80 text-base leading-relaxed mb-8"
-              >
-                {t('about.text') as string}
-              </motion.p>
+              {/* Text scrim — body + vision get a reliable dark backing */}
+              <div className="bg-black/45 backdrop-blur-sm rounded-xl p-5 border border-white/[0.07] text-center md:text-start">
+                <motion.p
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={headInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="text-white/90 text-base leading-relaxed mb-6"
+                >
+                  {t('about.text') as string}
+                </motion.p>
 
-              {/* Vision quote — shift5.io pull-quote style */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={headInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.65, delay: 0.35 }}
-                className={`flex gap-4 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
-              >
-                <div className="w-[2px] flex-shrink-0 rounded-full bg-gradient-to-b from-blue-500 to-amber-500" />
-                <div>
-                  <p className="text-white/60 text-[10px] uppercase tracking-[0.2em] font-mono mb-2">
-                    {dir === 'rtl' ? 'החזון שלנו' : 'Our Vision'}
-                  </p>
-                  <p className="text-white/90 text-sm md:text-base leading-relaxed italic">
-                    "{t('about.vision') as string}"
-                  </p>
-                </div>
-              </motion.div>
+                {/* Vision quote — shift5.io pull-quote style */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={headInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.65, delay: 0.35 }}
+                  className={`flex gap-4 justify-center md:justify-start ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+                >
+                  <div className="w-[2px] flex-shrink-0 rounded-full bg-gradient-to-b from-blue-500 to-amber-500" />
+                  <div>
+                    <p className="text-white/65 text-[10px] uppercase tracking-[0.2em] font-mono mb-2">
+                      {dir === 'rtl' ? 'החזון שלנו' : 'Our Vision'}
+                    </p>
+                    <p className="text-white/90 text-sm md:text-base leading-relaxed italic">
+                      "{t('about.vision') as string}"
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
             </div>
 
             {/* Right: 2×2 Moving Border value cards */}

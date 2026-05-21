@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Outside any @layer so it wins over all Tailwind utilities.
+   !important beats dir="rtl" directional defaults on mobile. */
+@media (max-width: 767px) {
+  main h1, main h2, main h3, main h4, main p {
+    text-align: center !important;
+  }
+}
+
 @layer utilities {
   .bg-dot-grid {
     background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);

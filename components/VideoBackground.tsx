@@ -10,8 +10,6 @@ const SECTIONS = [
 
 const VIDEO_MAX = 6.04
 
-// On mobile, browsers are slow to decode seeks — throttle to 1 seek per N frames
-// and raise the minimum diff threshold so trivial micro-scrolls don't trigger a seek.
 const isMobile = () =>
   typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
 
@@ -27,18 +25,16 @@ export function VideoBackground() {
     video.currentTime = 0
 
     const mobile = isMobile()
-    // Mobile: seek at most every 3rd frame and only for diffs > 2 frames worth.
-    // Desktop: original behaviour (every frame, 1-frame threshold).
-    const FRAME_SKIP  = mobile ? 3  : 1
-    const SEEK_THRESH = mobile ? 0.05 : 0.016
 
-    let dirty = true
-    let frameCount = 0
+    // Mobile: lerp video.currentTime toward the target each frame — many tiny seeks
+    // instead of occasional large seeks, which is what caused the jumpiness.
+    // Desktop: direct seek every frame for immediate response.
+    const LERP    = mobile ? 0.14 : 1.0
+    const SEEK_MIN = 0.01  // skip imperceptibly small seeks (~0.6 frames at 60 fps)
 
-    // Cache absolute section positions so we never trigger a reflow inside rAF.
-    // Invalidated on resize.
     type CachedSection = { start: number; end: number; top: number; height: number }
     let cache: CachedSection[] = []
+    let targetTime = 0
 
     const buildCache = () => {
       const y = window.scrollY
@@ -50,45 +46,50 @@ export function VideoBackground() {
       })
     }
 
-    const getTargetTime = (): number => {
+    const computeTarget = (): number => {
       const y = window.scrollY
       for (const s of cache) {
         if (s.height === 0) continue
         if (y >= s.top && y < s.top + s.height) {
-          const progress = Math.max(0, Math.min(1, (y - s.top) / s.height))
-          return s.start + progress * (s.end - s.start)
+          return s.start + Math.max(0, Math.min(1, (y - s.top) / s.height)) * (s.end - s.start)
         }
       }
       return VIDEO_MAX
     }
 
-    const onScroll = () => { dirty = true }
+    const onScroll = () => {
+      targetTime = computeTarget()
+    }
 
     const onResize = () => {
       buildCache()
-      dirty = true
+      targetTime = computeTarget()
     }
 
     const loop = () => {
-      frameCount++
-      if (dirty && video.readyState >= 2 && frameCount % FRAME_SKIP === 0) {
-        const target = getTargetTime()
-        if (Math.abs(target - video.currentTime) > SEEK_THRESH) {
-          video.currentTime = target
+      if (video.readyState >= 2) {
+        const diff = targetTime - video.currentTime
+        if (Math.abs(diff) > SEEK_MIN) {
+          video.currentTime = mobile
+            ? video.currentTime + diff * LERP
+            : targetTime
         }
-        dirty = false
       }
       rafRef.current = requestAnimationFrame(loop)
     }
 
     const onCanPlay = () => {
       buildCache()
-      dirty = true
+      targetTime = computeTarget()
     }
     video.addEventListener('canplay', onCanPlay)
 
-    // Build cache immediately if the DOM is already laid out
+    // Rebuild cache after full page load — fonts/images can shift section heights
+    const onLoad = () => { buildCache(); targetTime = computeTarget() }
+    window.addEventListener('load', onLoad)
+
     buildCache()
+    targetTime = computeTarget()
     loop()
 
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -97,6 +98,7 @@ export function VideoBackground() {
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('load', onLoad)
       video.removeEventListener('canplay', onCanPlay)
       cancelAnimationFrame(rafRef.current)
     }
@@ -109,8 +111,6 @@ export function VideoBackground() {
       className="fixed inset-0 w-full h-full object-cover pointer-events-none"
       style={{
         zIndex: -1,
-        // Force the video onto its own GPU compositor layer so repaints
-        // from seeking never block the main thread's rendering pipeline.
         willChange: 'transform',
         transform: 'translateZ(0)',
       }}
