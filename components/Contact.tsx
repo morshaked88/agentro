@@ -66,7 +66,7 @@ export function Contact() {
 
             {/* Email link */}
             <motion.a
-              href="mailto:info@agentro.co.il"
+              href="mailto:info@agentmy.co.il"
               className="group flex items-center gap-3 mb-8 cursor-pointer w-fit"
               whileHover={{ x: dir === 'rtl' ? -4 : 4 }}
               transition={{ duration: 0.2 }}
@@ -79,7 +79,7 @@ export function Contact() {
                 </svg>
               </div>
               <span className="text-white/65 group-hover:text-blue-400 text-sm font-mono transition-colors duration-200">
-                info@agentro.co.il
+                info@agentmy.co.il
               </span>
               <span className="text-white/25 group-hover:text-blue-400 text-sm transition-colors duration-200">→</span>
             </motion.a>

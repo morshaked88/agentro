@@ -142,7 +142,7 @@ export function ScrollVideoSection() {
             className="absolute text-center pointer-events-none select-none"
           >
             <p className="font-display text-sm md:text-base font-semibold text-white/50 uppercase tracking-widest mb-3">
-              Agentro
+              Agentmy
             </p>
             <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight">
               {dir === 'rtl' ? 'הטכנולוגיה שלכם' : 'Your Technology'}

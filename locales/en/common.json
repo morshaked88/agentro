@@ -6,7 +6,7 @@
   },
   "hero": {
     "headline": "Intelligence That Works. Software That Scales.",
-    "sub": "Agentro builds custom AI systems and high-performance software that transform how your business operates — so you can work smarter, faster, and at lower cost.",
+    "sub": "Agentmy builds custom AI systems and high-performance software that transform how your business operates — so you can work smarter, faster, and at lower cost.",
     "cta_services": "See What We Build",
     "cta_contact": "Start a Project"
   },
@@ -25,7 +25,7 @@
   },
   "about": {
     "title": "Who We Are",
-    "text": "Agentro is a technology company focused on one thing: building AI systems and software that generate real business results. We don't sell ready-made templates — every project is designed from scratch according to the goals, constraints, and specific growth targets of our clients.",
+    "text": "Agentmy is a technology company focused on one thing: building AI systems and software that generate real business results. We don't sell ready-made templates — every project is designed from scratch according to the goals, constraints, and specific growth targets of our clients.",
     "badges": ["AI at the Core", "Fast Delivery", "Modern Architecture"]
   },
   "contact": {
@@ -38,6 +38,6 @@
   },
   "footer": {
     "tagline": "Building the intelligent engine of your business.",
-    "copy": "© 2025 Agentro. All rights reserved."
+    "copy": "© 2025 Agentmy. All rights reserved."
   }
 }

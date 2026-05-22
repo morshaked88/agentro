@@ -18,11 +18,11 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Agentro — AI Solutions & Software Development',
+  title: 'Agentmy — AI Solutions & Software Development',
   description:
-    'Agentro builds custom AI agents, automation systems, and high-performance software that help businesses operate faster and compete smarter.',
+    'Agentmy builds custom AI agents, automation systems, and high-performance software that help businesses operate faster and compete smarter.',
   openGraph: {
-    title: 'Agentro — AI Solutions & Software Development',
+    title: 'Agentmy — AI Solutions & Software Development',
     description: 'Custom AI systems and software built for ambitious businesses.',
     type: 'website',
   },

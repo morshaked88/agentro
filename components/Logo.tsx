@@ -21,7 +21,7 @@ export function Logo({ size = 'md', className = '' }: LogoProps) {
         className="text-sky-400"
         style={{ textShadow: '0 0 18px rgba(56,189,248,0.45)' }}
       >
-        ro
+        my
       </span>
     </span>
   )

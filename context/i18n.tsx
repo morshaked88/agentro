@@ -9,7 +9,7 @@ const translations = {
     nav: { services: 'Services', about: 'About', contact: 'Contact' },
     hero: {
       headline: 'Intelligence That Works. Software That Scales.',
-      sub: 'Agentro builds custom AI systems and high-performance software that transform how your business operates — so you can compete on a different level.',
+      sub: 'Agentmy builds custom AI systems and high-performance software that transform how your business operates — so you can compete on a different level.',
       cta_services: 'See What We Build',
       cta_contact: 'Start a Project',
       tag1: 'AI Agents & Automation',
@@ -55,7 +55,7 @@ const translations = {
     },
     about: {
       title: 'Who We Are',
-      text: 'Agentro is a technology company focused on one thing: building AI systems and software that genuinely move the needle for the businesses we work with. We don\'t sell templates or generic solutions — every project is designed from scratch around your specific goals, constraints, and growth targets.',
+      text: 'Agentmy is a technology company focused on one thing: building AI systems and software that genuinely move the needle for the businesses we work with. We don\'t sell templates or generic solutions — every project is designed from scratch around your specific goals, constraints, and growth targets.',
       vision: 'Our vision is to be the AI and software partner that ambitious businesses trust when the stakes are high — delivering technology that\'s not just modern, but mission-critical.',
       badges: ['AI-First', 'Fast Delivery', 'Modern Stack'],
       val1_title: 'AI-First Thinking',
@@ -77,14 +77,14 @@ const translations = {
     },
     footer: {
       tagline: 'Building the intelligence layer of your business.',
-      copy: '© 2025 Agentro. All rights reserved.',
+      copy: '© 2025 Agentmy. All rights reserved.',
     },
   },
   he: {
     nav: { services: 'שירותים', about: 'אודות', contact: 'צור קשר' },
     hero: {
       headline: 'בינה מלאכותית שעובדת. תוכנה שצומחת.',
-      sub: 'Agentro בונה מערכות AI מותאמות ותוכנה עסקית שמשנות את האופן שבו הארגון שלכם פועל — כדי שתעבדו חכם יותר, מהיר יותר, ובעלות נמוכה יותר.',
+      sub: 'Agentmy בונה מערכות AI מותאמות ותוכנה עסקית שמשנות את האופן שבו הארגון שלכם פועל — כדי שתעבדו חכם יותר, מהיר יותר, ובעלות נמוכה יותר.',
       cta_services: 'ראו מה אנחנו בונים',
       cta_contact: 'התחילו פרויקט',
       tag1: 'סוכני AI ואוטומציה',
@@ -130,7 +130,7 @@ const translations = {
     },
     about: {
       title: 'מי אנחנו',
-      text: 'Agentro היא חברת טכנולוגיה שמתמקדת בדבר אחד: לבנות מערכות AI ותוכנה שמייצרות תוצאות עסקיות אמיתיות. אנחנו לא מוכרים תבניות מוכנות — כל פרויקט מתוכנן מאפס בהתאם למטרות, לאילוצים וליעדי הצמיחה הספציפיים של הלקוח.',
+      text: 'Agentmy היא חברת טכנולוגיה שמתמקדת בדבר אחד: לבנות מערכות AI ותוכנה שמייצרות תוצאות עסקיות אמיתיות. אנחנו לא מוכרים תבניות מוכנות — כל פרויקט מתוכנן מאפס בהתאם למטרות, לאילוצים וליעדי הצמיחה הספציפיים של הלקוח.',
       vision: 'אנחנו שואפים להיות שותף ה-AI והתוכנה שעסקים שאפתניים בוחרים כשיש משמעות אמיתית לתוצאה — ולספק טכנולוגיה שהיא לא רק מתקדמת, אלא הכרחית להצלחת הארגון.',
       badges: ['AI בלב הפתרון', 'משלוח מהיר', 'ארכיטקטורה מודרנית'],
       val1_title: 'AI בלב הפתרון',
@@ -152,7 +152,7 @@ const translations = {
     },
     footer: {
       tagline: 'בונים את המנוע החכם של העסק שלך.',
-      copy: '© 2025 Agentro. כל הזכויות שמורות.',
+      copy: '© 2025 Agentmy. כל הזכויות שמורות.',
     },
   },
 }
