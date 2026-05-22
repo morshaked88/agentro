@@ -1,179 +1,183 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useI18n } from '@/context/i18n'
 
+const ease = [0.16, 1, 0.3, 1] as const
+
 export function Hero() {
   const { t, dir } = useI18n()
-  const headline = t('hero.headline') as string
-  const spotRef = useRef<HTMLDivElement>(null)
-  const sectionRef = useRef<HTMLElement>(null)
-
-  // Aceternity spotlight — direct DOM updates, zero React re-renders
-  const onMouseMove = useCallback((e: MouseEvent) => {
-    if (!spotRef.current || !sectionRef.current) return
-    const rect = sectionRef.current.getBoundingClientRect()
-    spotRef.current.style.left = `${e.clientX - rect.left - 400}px`
-    spotRef.current.style.top = `${e.clientY - rect.top - 400}px`
-  }, [])
-
-  useEffect(() => {
-    const s = sectionRef.current
-    if (!s) return
-    s.addEventListener('mousemove', onMouseMove as EventListener)
-    return () => s.removeEventListener('mousemove', onMouseMove as EventListener)
-  }, [onMouseMove])
-
-  const parts = headline.split('.').map(s => s.trim()).filter(Boolean)
 
   const stats = [
     { val: '10×',  lbl: dir === 'rtl' ? 'מהירות תפוקה' : 'Faster Output' },
-    { val: '24/7', lbl: dir === 'rtl' ? 'תמיד זמין'     : 'Always On' },
+    { val: '24/7', lbl: dir === 'rtl' ? 'תמיד זמין'     : 'Always On'    },
     { val: '100%', lbl: dir === 'rtl' ? 'מותאם אישית'   : 'Custom-Built' },
   ]
 
+  const scrollTo = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
   return (
     <section
-      ref={sectionRef}
       id="hero"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-16 overflow-hidden"
+      style={{ background: 'var(--color-paper)', overflow: 'hidden' }}
+      className="relative"
     >
-      {/* Video vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(0,0,0,0.60),transparent)] pointer-events-none" />
-
-      {/* Aceternity spotlight */}
+      {/* Ambient glow — restrained, single accent */}
       <div
-        ref={spotRef}
-        className="absolute w-[800px] h-[800px] pointer-events-none rounded-full"
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(59,130,246,0.14) 0%, rgba(59,130,246,0.04) 40%, transparent 70%)',
+          background: dir === 'rtl'
+            ? 'radial-gradient(ellipse 55% 40% at 20% 30%, oklch(64% 0.22 262 / 0.07), transparent)'
+            : 'radial-gradient(ellipse 55% 40% at 80% 30%, oklch(64% 0.22 262 / 0.07), transparent)',
         }}
       />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 w-full text-center" dir={dir}>
-
-        {/* Overline badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-center mb-8"
+      <div className="max-w-6xl mx-auto px-4 md:px-6">
+        {/* Split diptych */}
+        <div
+          className={`grid md:grid-cols-2 gap-10 lg:gap-16 items-center pt-28 pb-12
+            ${dir === 'rtl' ? 'md:[&>*:first-child]:order-2' : ''}`}
+          dir={dir}
         >
-          <div className="inline-flex items-center gap-2.5 border border-white/[0.12] rounded-full px-4 py-1.5 bg-white/[0.04] backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse flex-shrink-0" />
-            <span className="text-white/50 text-[11px] font-mono tracking-[0.2em] uppercase">
-              {dir === 'rtl' ? 'AI · פיתוח תוכנה עסקית' : 'AI · Business Software'}
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Headline — split on "." for two-line gradient effect */}
-        <div className="mb-7">
-          {parts.map((part, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 52 }}
+          {/* Left — content */}
+          <div>
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.85, delay: 0.1 + i * 0.2, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.4, ease }}
+              className="text-[11px] font-semibold tracking-[0.14em] uppercase mb-5"
+              style={{ color: 'var(--color-accent)' }}
             >
-              <span
-                className={`block font-display font-extrabold leading-[0.92] tracking-tight
-                  text-[2.4rem] sm:text-5xl md:text-[3.75rem] lg:text-7xl xl:text-8xl
-                  ${i === parts.length - 1
-                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-200'
-                    : 'text-white'
-                  }`}
+              {dir === 'rtl' ? 'מערכות AI · פיתוח תוכנה מותאם' : 'Custom AI Systems · Software Development'}
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.07, ease }}
+              className="font-display font-bold leading-[1.05] tracking-tight mb-5"
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'var(--text-display)',
+                color: 'var(--color-ink)',
+                overflowWrap: 'anywhere',
+                minWidth: 0,
+              }}
+            >
+              {t('hero.headline') as string}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.15, ease }}
+              className="text-base leading-relaxed mb-8 max-w-md"
+              style={{ color: 'var(--color-ink-2)' }}
+            >
+              {t('hero.sub') as string}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.24 }}
+              className={`flex flex-wrap gap-3 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}
+            >
+              {/* Primary CTA */}
+              <button
+                onClick={() => scrollTo('contact')}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold cursor-pointer
+                  transition-opacity duration-150 hover:opacity-88 focus-visible:outline-none"
+                style={{ background: 'var(--color-accent)', color: 'var(--color-accent-ink)' }}
+                onFocus={e => e.currentTarget.style.boxShadow = '0 0 0 3px var(--color-focus)'}
+                onBlur={e => e.currentTarget.style.boxShadow = ''}
               >
-                {part}{i < parts.length - 1 ? '.' : ''}
-              </span>
+                {t('hero.cta_contact') as string}
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden>
+                  <path
+                    d={dir === 'rtl' ? 'M9 7H5M5 7l3-3M5 7l3 3' : 'M5 7h4M9 7L6 4M9 7L6 10'}
+                    stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              {/* Secondary CTA */}
+              <button
+                onClick={() => scrollTo('capabilities')}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold cursor-pointer
+                  transition-all duration-150 focus-visible:outline-none"
+                style={{ border: '1px solid var(--color-rule)', color: 'var(--color-ink-2)' }}
+                onMouseEnter={e => { e.currentTarget.style.color = 'var(--color-ink)'; e.currentTarget.style.borderColor = 'oklch(32% 0.008 262)' }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'var(--color-ink-2)'; e.currentTarget.style.borderColor = 'var(--color-rule)' }}
+                onFocus={e => e.currentTarget.style.boxShadow = '0 0 0 3px var(--color-focus)'}
+                onBlur={e => e.currentTarget.style.boxShadow = ''}
+              >
+                {t('hero.cta_services') as string}
+              </button>
             </motion.div>
-          ))}
+          </div>
+
+          {/* Right — video panel */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.65, delay: 0.12, ease }}
+            className="relative hidden md:block"
+            style={{
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid var(--color-rule)',
+              overflow: 'hidden',
+              aspectRatio: '16 / 10',
+            }}
+          >
+            <video
+              autoPlay muted loop playsInline
+              className="w-full h-full object-cover"
+              style={{ opacity: 0.8 }}
+            >
+              <source src="/video/hero.mp4" type="video/mp4" />
+            </video>
+            {/* Subtle vignette inside the frame */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'linear-gradient(to bottom right, oklch(10% 0.008 262 / 0.35), transparent 60%)' }}
+            />
+          </motion.div>
         </div>
 
-        {/* Subtext */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.65 }}
-          className="text-white/75 text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
-        >
-          {t('hero.sub') as string}
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.55 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
-        >
-          <a
-            href="#services-ai"
-            className="group relative w-full sm:w-auto overflow-hidden px-8 py-3.5
-              bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm tracking-wide
-              rounded-lg cursor-pointer transition-all duration-200
-              shadow-[0_0_40px_rgba(59,130,246,0.35)] hover:shadow-[0_0_60px_rgba(59,130,246,0.5)]"
-          >
-            <span className="relative z-10 inline-flex items-center gap-2">
-              {t('hero.cta_services') as string}
-              <motion.span
-                animate={{ x: [0, 3, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                →
-              </motion.span>
-            </span>
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full
-              transition-transform duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          </a>
-          <a
-            href="#contact"
-            className="w-full sm:w-auto px-8 py-3.5 border border-white/[0.18] hover:border-white/35
-              text-white/65 hover:text-white font-semibold text-sm tracking-wide
-              rounded-lg cursor-pointer transition-all duration-200"
-          >
-            {t('hero.cta_contact') as string}
-          </a>
-        </motion.div>
-
-        {/* Stats bar */}
+        {/* Stat strip */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.7 }}
-          className="flex items-center justify-center"
+          transition={{ duration: 0.4, delay: 0.38 }}
+          className="flex items-stretch"
+          style={{ borderTop: '1px solid var(--color-rule)' }}
+          dir={dir}
         >
           {stats.map((s, i) => (
             <div
               key={i}
-              className={`text-center px-6 md:px-10 ${
-                i > 0 ? 'border-l border-white/[0.10]' : ''
-              }`}
+              className="flex-1 py-5 text-center"
+              style={{ borderRight: i < stats.length - 1 ? '1px solid var(--color-rule)' : 'none' }}
             >
-              <p className="font-display text-2xl md:text-3xl font-bold text-white">{s.val}</p>
-              <p className="text-white/55 text-[11px] mt-0.5 font-mono tracking-wider uppercase">{s.lbl}</p>
+              <p
+                className="font-display font-bold text-2xl mb-0.5 tabular-nums"
+                style={{ fontFamily: 'var(--font-display)', color: 'var(--color-ink)' }}
+              >
+                {s.val}
+              </p>
+              <p
+                className="text-[11px] uppercase tracking-wider font-medium"
+                style={{ color: 'var(--color-ink-3)' }}
+              >
+                {s.lbl}
+              </p>
             </div>
           ))}
         </motion.div>
       </div>
-
-      {/* Mouse scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <div className="w-6 h-9 border border-white/[0.18] rounded-full flex items-start justify-center pt-1.5">
-          <motion.div
-            className="w-1 h-2 bg-white/35 rounded-full"
-            animate={{ y: [0, 10, 0], opacity: [0.35, 0.7, 0.35] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        </div>
-      </motion.div>
     </section>
   )
 }

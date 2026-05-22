@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
       <body
-        className={`${syne.variable} ${dmSans.variable} font-sans bg-[#0a0a0a] text-white antialiased`}
+        className={`${syne.variable} ${dmSans.variable} font-sans antialiased`}
       >
         <I18nProvider>{children}</I18nProvider>
       </body>

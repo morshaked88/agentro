@@ -1,41 +1,76 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Bento Grid · theme: Quiet (dark) · nav: N5 · footer: Ft5 */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Outside any @layer so it wins over all Tailwind utilities.
-   !important beats dir="rtl" directional defaults on mobile. */
-@media (max-width: 767px) {
-  main h1, main h2, main h3, main h4, main p {
-    text-align: center !important;
-  }
-}
+:root {
+  --color-paper:      oklch(10% 0.008 262);
+  --color-paper-2:    oklch(13.5% 0.008 262);
+  --color-paper-3:    oklch(17% 0.008 262);
+  --color-ink:        oklch(97% 0.002 262);
+  --color-ink-2:      oklch(65% 0.006 262);
+  --color-ink-3:      oklch(40% 0.005 262);
+  --color-rule:       oklch(22% 0.007 262);
+  --color-accent:     oklch(64% 0.22 262);
+  --color-accent-ink: oklch(100% 0 0);
+  --color-focus:      oklch(75% 0.20 262);
 
-@layer utilities {
-  .bg-dot-grid {
-    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
+  --font-display: var(--font-syne), sans-serif;
+  --font-body:    var(--font-dm-sans), sans-serif;
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2rem;
+  --space-xl:  3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 7rem;
+
+  --text-xs:      0.75rem;
+  --text-sm:      0.875rem;
+  --text-md:      1.125rem;
+  --text-lg:      1.375rem;
+  --text-xl:      1.75rem;
+  --text-2xl:     2.25rem;
+  --text-display: clamp(2.5rem, 4vw + 1rem, 4.75rem);
+
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --dur-short: 150ms;
+  --dur-mid:   250ms;
+  --dur-long:  450ms;
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-pill: 9999px;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-  }
-
-  html {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   body {
-    @apply bg-black text-white;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
     font-feature-settings: 'rlig' 1, 'calt' 1;
-    overflow-x: hidden;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: #0a0a0a; }
-  ::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+  ::-webkit-scrollbar-track { background: var(--color-paper); }
+  ::-webkit-scrollbar-thumb { background: var(--color-rule); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -43,5 +78,37 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer utilities {
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+    .bento-grid > * {
+      grid-column: 1 !important;
+      grid-row: auto !important;
+    }
+  }
+
+  .tile {
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: border-color var(--dur-mid) var(--ease-out),
+                background var(--dur-mid) var(--ease-out);
+  }
+
+  .tile:hover {
+    border-color: oklch(28% 0.008 262);
+    background: var(--color-paper-3);
   }
 }
