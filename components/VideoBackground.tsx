@@ -2,13 +2,7 @@
 
 import { useEffect, useRef } from 'react'
 
-const SECTIONS = [
-  { id: 'hero',         start: 0, end: 2 },
-  { id: 'services-ai',  start: 2, end: 4 },
-  { id: 'services-web', start: 4, end: 6 },
-] as const
-
-const VIDEO_MAX = 6.04
+const VIDEO_MAX = 6.0
 
 const isMobile = () =>
   typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
@@ -26,40 +20,30 @@ export function VideoBackground() {
 
     const mobile = isMobile()
 
-    // Mobile: lerp video.currentTime toward the target each frame — many tiny seeks
-    // instead of occasional large seeks, which is what caused the jumpiness.
-    // Desktop: direct seek every frame for immediate response.
-    const LERP    = mobile ? 0.14 : 1.0
-    const SEEK_MIN = 0.01  // skip imperceptibly small seeks (~0.6 frames at 60 fps)
+    const LERP     = mobile ? 0.10 : 1.0
+    const SEEK_MIN = 0.008
 
-    type CachedSection = { start: number; end: number; top: number; height: number }
-    let cache: CachedSection[] = []
-    let targetTime = 0
+    let rangeTop    = 0  // scrollY where time = 0  (top of hero)
+    let rangeBottom = 1  // scrollY where time = 6s (bottom of contact)
+    let targetTime  = 0
 
     const buildCache = () => {
       const y = window.scrollY
-      cache = SECTIONS.map((s) => {
-        const el = document.getElementById(s.id)
-        if (!el) return { ...s, top: 0, height: 0 }
-        const rect = el.getBoundingClientRect()
-        return { start: s.start, end: s.end, top: rect.top + y, height: el.offsetHeight }
-      })
+      const heroEl    = document.getElementById('hero')
+      const contactEl = document.getElementById('contact')
+      if (!heroEl || !contactEl) return
+      rangeTop    = heroEl.getBoundingClientRect().top + y
+      rangeBottom = contactEl.getBoundingClientRect().bottom + y
     }
 
     const computeTarget = (): number => {
-      const y = window.scrollY
-      for (const s of cache) {
-        if (s.height === 0) continue
-        if (y >= s.top && y < s.top + s.height) {
-          return s.start + Math.max(0, Math.min(1, (y - s.top) / s.height)) * (s.end - s.start)
-        }
-      }
-      return VIDEO_MAX
+      const span = rangeBottom - rangeTop
+      if (span <= 0) return 0
+      const progress = Math.max(0, Math.min(1, (window.scrollY - rangeTop) / span))
+      return progress * VIDEO_MAX
     }
 
-    const onScroll = () => {
-      targetTime = computeTarget()
-    }
+    const onScroll = () => { targetTime = computeTarget() }
 
     const onResize = () => {
       buildCache()
@@ -84,7 +68,6 @@ export function VideoBackground() {
     }
     video.addEventListener('canplay', onCanPlay)
 
-    // Rebuild cache after full page load — fonts/images can shift section heights
     const onLoad = () => { buildCache(); targetTime = computeTarget() }
     window.addEventListener('load', onLoad)
 
