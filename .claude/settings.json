@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(npm audit *)",
-      "Bash(node -e \"console.log\\(require\\('./node_modules/next/package.json'\\).version\\)\")"
+      "Bash(node -e \"console.log\\(require\\('./node_modules/next/package.json'\\).version\\)\")",
+      "Bash(ls -la /Users/devdev/devspark-new/public/ && find /var/folders /tmp -name \"*.png\" -newer /Users/devdev/devspark-new/public/agento-logo.png 2>/dev/null | head -10)",
+      "Read(//private/var/folders/**)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/devdev/devspark-new/public/agento-logo.png)"
     ]
   }
 }

@@ -73,9 +73,9 @@ export const metadata: Metadata = {
       'Agentmy בונה מערכות AI מותאמות אישית, סוכנים אוטונומיים ותוכנה עסקית שמשנות את אופן הפעולה של הארגון שלכם.',
     images: [
       {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
+        url: '/agento-logo.png',
+        width: 2816,
+        height: 1536,
         alt: 'Agentmy — פתרונות AI ופיתוח תוכנה',
       },
     ],
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     title: 'Agentmy | פתרונות AI ופיתוח תוכנה',
     description:
       'Agentmy בונה מערכות AI מותאמות אישית, סוכנים אוטונומיים ותוכנה עסקית.',
-    images: ['/og-image.png'],
+    images: ['/agento-logo.png'],
   },
 
   alternates: {

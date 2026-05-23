@@ -62,9 +62,6 @@ export function Footer() {
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-2 mt-8 pt-6 border-t border-white/[0.06]">
           <p className="text-white/25 text-xs font-mono">{t('footer.copy') as string}</p>
-          <p className="text-white/15 text-xs font-mono">
-            {dir === 'rtl' ? 'בנוי עם ♥ בישראל' : 'Built with ♥ in Israel'}
-          </p>
         </div>
       </div>
     </footer>
