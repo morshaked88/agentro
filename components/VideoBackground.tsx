@@ -20,11 +20,14 @@ export function VideoBackground() {
 
     const mobile = isMobile()
 
-    const LERP     = mobile ? 0.10 : 1.0
-    const SEEK_MIN = 0.008
+    // Mobile: snap every 5 frames (~12/s) — fewer large seeks beat many tiny lerp seeks
+    // Desktop: snap every frame (60/s) — GPU decode handles it fine
+    const SEEK_EVERY = mobile ? 5 : 1
+    const SEEK_MIN   = mobile ? 0.06 : 0.008
 
-    let rangeTop    = 0  // scrollY where time = 0  (top of hero)
-    let rangeBottom = 1  // scrollY where time = 6s (bottom of contact)
+    let frameCount  = 0
+    let rangeTop    = 0
+    let rangeBottom = 1
     let targetTime  = 0
 
     const buildCache = () => {
@@ -51,13 +54,13 @@ export function VideoBackground() {
     }
 
     const loop = () => {
-      if (video.readyState >= 2) {
+      frameCount++
+      if (video.readyState >= 2 && frameCount >= SEEK_EVERY) {
         const diff = targetTime - video.currentTime
         if (Math.abs(diff) > SEEK_MIN) {
-          video.currentTime = mobile
-            ? video.currentTime + diff * LERP
-            : targetTime
+          video.currentTime = targetTime
         }
+        frameCount = 0
       }
       rafRef.current = requestAnimationFrame(loop)
     }
