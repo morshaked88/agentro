@@ -5,8 +5,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect, useRef } from 'react'
 
 const CONFIG = {
-  easeFactor: 0.1,
-  seekSkipS:  1 / 60,
+  easeFactor:       0.1,
+  seekSkipS:        1 / 60,
+  // Mobile decoder stalls when seeked at 60fps — cap at ~15fps wall-clock
+  mobileSeekMs:     67,
 } as const
 
 interface Props {
@@ -54,6 +56,9 @@ export function ScrollVideoHero({ videoSrc, fallbackImageSrc, children }: Props)
       return () => { video.removeEventListener('loadedmetadata', onLoadedMetadata) }
     }
 
+    const isMobile = window.matchMedia('(pointer: coarse)').matches
+    let lastSeekMs = 0
+
     // rAF smoothing loop — owns all DOM mutations
     const loop = () => {
       const diff = targetRef.current - currentRef.current
@@ -64,8 +69,11 @@ export function ScrollVideoHero({ videoSrc, fallbackImageSrc, children }: Props)
 
         if (video.readyState >= 3 && video.duration) {
           const t = p * video.duration
-          if (Math.abs(t - video.currentTime) >= CONFIG.seekSkipS) {
+          const now = performance.now()
+          const pastThrottle = !isMobile || now - lastSeekMs >= CONFIG.mobileSeekMs
+          if (pastThrottle && Math.abs(t - video.currentTime) >= CONFIG.seekSkipS) {
             video.currentTime = t
+            if (isMobile) lastSeekMs = now
           }
         }
 

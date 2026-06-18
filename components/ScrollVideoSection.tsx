@@ -19,10 +19,17 @@ export function ScrollVideoSection() {
     offset: ['start start', 'end end'],
   })
 
-  // Smooth video scrubbing via rAF lerp — avoids the choppy seeking
+  // Smooth video scrubbing via rAF — throttled on mobile to avoid decoder stalls
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+
+    // Coarse-pointer = touchscreen. Mobile decoders stall when seeked >15×/sec.
+    const isMobile = window.matchMedia('(pointer: coarse)').matches
+    // ~15fps seek cadence on mobile (67ms), uncapped on desktop
+    const SEEK_INTERVAL_MS = isMobile ? 67 : 0
+    // Larger dead-zone on mobile so tiny drift doesn't trigger a decode
+    const MIN_DIFF_S = isMobile ? 0.05 : 0.01
 
     video.pause()
     video.currentTime = 0
@@ -34,12 +41,21 @@ export function ScrollVideoSection() {
       )
     })
 
+    let lastSeekMs = 0
+
     const loop = () => {
-      if (video.readyState >= 1) {
+      // readyState >= 2 (HAVE_CURRENT_DATA) required before seeking
+      if (video.readyState >= 2) {
+        const now = performance.now()
         const diff = targetTimeRef.current - video.currentTime
-        // Lerp toward target — smooth without overshooting
-        if (Math.abs(diff) > 0.01) {
-          video.currentTime += diff * 0.25
+
+        if (Math.abs(diff) > MIN_DIFF_S && now - lastSeekMs >= SEEK_INTERVAL_MS) {
+          // On mobile: jump directly to target within the throttle window.
+          // On desktop: lerp for silky smoothness.
+          video.currentTime = isMobile
+            ? targetTimeRef.current
+            : video.currentTime + diff * 0.25
+          lastSeekMs = now
         }
       }
       rafRef.current = requestAnimationFrame(loop)
