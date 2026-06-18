@@ -1,4 +1,3 @@
-import { VideoBackground } from '@/components/VideoBackground'
 import { Navbar } from '@/components/Navbar'
 import { Hero } from '@/components/Hero'
 import { ServiceSection } from '@/components/ServiceSection'
@@ -9,7 +8,6 @@ import { Footer } from '@/components/Footer'
 export default function Home() {
   return (
     <>
-      <VideoBackground />
       <main>
         <Navbar />
         <Hero />
