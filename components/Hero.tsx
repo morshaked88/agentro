@@ -40,8 +40,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      id="hero"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-16 overflow-hidden"
+      className="absolute inset-0 flex flex-col items-center justify-center pt-16"
     >
       {/* Video vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85 pointer-events-none" />
@@ -175,21 +174,6 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Mouse scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <div className="w-6 h-9 border border-white/[0.18] rounded-full flex items-start justify-center pt-1.5">
-          <motion.div
-            className="w-1 h-2 bg-white/35 rounded-full"
-            animate={{ y: [0, 10, 0], opacity: [0.35, 0.7, 0.35] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-      </motion.div>
     </section>
   );
 }
