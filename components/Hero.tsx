@@ -1,30 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useI18n } from "@/context/i18n";
+import FlowWave from "@/components/ui/flow-wave";
 
 export function Hero() {
   const { t, dir } = useI18n();
   const headline = t("hero.headline") as string;
-  const spotRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  // Aceternity spotlight — direct DOM updates, zero React re-renders
-  const onMouseMove = useCallback((e: MouseEvent) => {
-    if (!spotRef.current || !sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    spotRef.current.style.left = `${e.clientX - rect.left - 400}px`;
-    spotRef.current.style.top = `${e.clientY - rect.top - 400}px`;
-  }, []);
-
-  useEffect(() => {
-    const s = sectionRef.current;
-    if (!s) return;
-    s.addEventListener("mousemove", onMouseMove as EventListener);
-    return () =>
-      s.removeEventListener("mousemove", onMouseMove as EventListener);
-  }, [onMouseMove]);
+  const isRTL = dir === "rtl";
 
   const parts = headline
     .split(".")
@@ -32,148 +15,166 @@ export function Hero() {
     .filter(Boolean);
 
   const stats = [
-    { val: "10×", lbl: dir === "rtl" ? "מהירות תפוקה" : "Faster Output" },
-    { val: "24/7", lbl: dir === "rtl" ? "תמיד זמין" : "Always On" },
-    { val: "100%", lbl: dir === "rtl" ? "מותאם אישית" : "Custom-Built" },
+    { val: "10×", lbl: isRTL ? "מהירות תפוקה" : "Faster Output" },
+    { val: "24/7", lbl: isRTL ? "תמיד זמין" : "Always On" },
+    { val: "100%", lbl: isRTL ? "מותאם אישית" : "Custom-Built" },
   ];
+
+  const scrollTo = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
-      ref={sectionRef}
-      className="absolute inset-0 flex flex-col items-center justify-center pt-16"
+      id="hero"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      style={{ background: "#06080f" }}
     >
-      {/* Video vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/85 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(0,0,0,0.60),transparent)] pointer-events-none" />
+      {/* Flow Wave background */}
+      <FlowWave className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Aceternity spotlight */}
+      {/* Indigo top-center brand overlay */}
       <div
-        ref={spotRef}
-        className="absolute w-[800px] h-[800px] pointer-events-none rounded-full"
+        className="absolute inset-0 pointer-events-none z-[1]"
         style={{
           background:
-            "radial-gradient(circle, rgba(59,130,246,0.14) 0%, rgba(59,130,246,0.04) 40%, transparent 70%)",
+            "radial-gradient(ellipse 80% 55% at 50% -15%, rgba(99,102,241,0.20), transparent)",
         }}
       />
 
+      {/* Amber bottom-left accent */}
       <div
-        className="relative z-10 max-w-5xl mx-auto px-6 w-full text-center"
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 40% at -5% 105%, rgba(245,158,11,0.07), transparent)",
+        }}
+      />
+
+      {/* Side & top vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background:
+            "radial-gradient(ellipse 100% 75% at 50% 50%, transparent 35%, #06080f 90%)",
+        }}
+      />
+
+      {/* Bottom blend — fades animation into next section */}
+      <div
+        className="absolute bottom-0 inset-x-0 h-52 pointer-events-none z-[2]"
+        style={{
+          background: "linear-gradient(to bottom, transparent, #06080f 85%)",
+        }}
+      />
+
+      {/* Content */}
+      <div
+        className="relative z-10 max-w-5xl mx-auto px-6 w-full text-center pt-20 pb-16"
         dir={dir}
       >
-        {/* Overline badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center justify-center mb-8"
-        ></motion.div>
-
-        {/* Headline — split on "." for two-line gradient effect */}
+        {/* Headline */}
         <div className="mb-7">
           {parts.map((part, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, y: 52 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.85,
-                delay: 0.1 + i * 0.2,
-                ease: [0.16, 1, 0.3, 1],
-              }}
+              className="hero-in-tall"
+              style={{ animationDelay: `${80 + i * 150}ms` }}
             >
               <span
-                className={`block font-display font-extrabold leading-[0.92] tracking-tight
-                  text-[2.4rem] sm:text-5xl md:text-[3.75rem] lg:text-7xl xl:text-8xl
+                className={`block font-display font-bold leading-[1.04] tracking-tight
+                  text-[2.2rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem]
                   ${
                     i === parts.length - 1
-                      ? "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-cyan-200"
+                      ? "bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-400 bg-clip-text text-transparent"
                       : "text-white"
                   }`}
               >
                 {part}
                 {i < parts.length - 1 ? "." : ""}
               </span>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Subtext */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.65 }}
-          className="text-white/75 text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+        <p
+          className="hero-in text-white text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed"
+          style={{ animationDelay: "480ms", animationDuration: "0.65s" }}
         >
           {t("hero.sub") as string}
-        </motion.p>
+        </p>
 
         {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.55 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+        <div
+          className="hero-in flex flex-col sm:flex-row items-center justify-center gap-3 mb-16"
+          style={{ animationDelay: "620ms", animationDuration: "0.55s" }}
         >
-          <a
-            href="#services-ai"
+          <button
+            onClick={() => scrollTo("services")}
             className="group relative w-full sm:w-auto overflow-hidden px-8 py-3.5
-              bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm tracking-wide
-              rounded-lg cursor-pointer transition-all duration-200
-              shadow-[0_0_40px_rgba(59,130,246,0.35)] hover:shadow-[0_0_60px_rgba(59,130,246,0.5)]"
+              bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm
+              rounded-xl cursor-pointer transition-all duration-200
+              shadow-[0_0_35px_rgba(99,102,241,0.30)]
+              hover:shadow-[0_0_55px_rgba(99,102,241,0.50)]"
           >
-            <span className="relative z-10 inline-flex items-center gap-2">
+            <span className="relative z-10 flex items-center justify-center gap-2">
               {t("hero.cta_services") as string}
               <motion.span
-                animate={{ x: [0, 3, 0] }}
+                animate={{ x: isRTL ? [0, -3, 0] : [0, 3, 0] }}
                 transition={{
                   duration: 1.5,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
               >
-                →
+                {isRTL ? "←" : "→"}
               </motion.span>
             </span>
-            <div
-              className="absolute inset-0 -translate-x-full group-hover:translate-x-full
-              transition-transform duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-            />
-          </a>
-          <a
-            href="#contact"
-            className="w-full sm:w-auto px-8 py-3.5 border border-white/[0.18] hover:border-white/35
-              text-white/65 hover:text-white font-semibold text-sm tracking-wide
-              rounded-lg cursor-pointer transition-all duration-200"
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          </button>
+
+          <button
+            onClick={() => scrollTo("contact")}
+            className="w-full sm:w-auto px-8 py-3.5 border border-white/30 hover:border-white/50
+              bg-white/[0.06] hover:bg-white/[0.10]
+              text-white font-medium text-sm
+              rounded-xl cursor-pointer transition-all duration-200"
           >
             {t("hero.cta_contact") as string}
-          </a>
-        </motion.div>
+          </button>
+        </div>
 
-        {/* Stats bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.7 }}
-          className="flex items-center justify-center"
+        {/* Stats row */}
+        <div
+          className="hero-in flex justify-center"
+          style={{ animationDelay: "820ms", animationDuration: "0.65s" }}
         >
+        <div className="flex items-center rounded-2xl border border-white/[0.07] bg-white/[0.025] backdrop-blur-sm overflow-hidden">
           {stats.map((s, i) => (
             <div
               key={i}
-              className={`text-center px-6 md:px-10 ${
-                i > 0 ? "border-l border-white/[0.10]" : ""
-              }`}
+              className={`text-center px-4 py-3 sm:px-8 sm:py-4 ${i > 0 ? "border-l border-white/[0.07]" : ""}`}
             >
-              <p className="font-display text-2xl md:text-3xl font-bold text-white">
+              <p className="font-display text-2xl font-bold text-white">
                 {s.val}
               </p>
-              <p className="text-white/55 text-[11px] mt-0.5 font-mono tracking-wider uppercase">
+              <p className="text-white text-[10px] mt-0.5 tracking-[0.18em] uppercase font">
                 {s.lbl}
               </p>
             </div>
           ))}
-        </motion.div>
+        </div>
+        </div>
       </div>
 
+      {/* Scroll indicator */}
+      <div
+        className="hero-fade absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-10"
+        style={{ animationDelay: "1200ms" }}
+      >
+        <div className="w-px h-10 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+        <div className="w-1 h-1 rounded-full bg-white/25" />
+      </div>
     </section>
   );
 }

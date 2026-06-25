@@ -10,15 +10,14 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ['var(--font-syne)', 'sans-serif'],
+        display: ['var(--font-space-grotesk)', 'sans-serif'],
         sans: ['var(--font-dm-sans)', 'sans-serif'],
       },
       colors: {
-        spark: {
-          bg: '#0a0a0a',
-          surface: '#111111',
-          elevated: '#1a1a1a',
-          blue: '#3b82f6',
+        brand: {
+          bg: '#06080f',
+          surface: '#0c0f1a',
+          indigo: '#6366f1',
           amber: '#f59e0b',
         },
       },

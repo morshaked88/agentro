@@ -290,7 +290,7 @@ export function ServiceSection({ id, phase, accent, align = "left" }: Props) {
     >
       {/* Section marker — shift5.io style */}
       <div className="flex items-center gap-3 mb-8 justify-center md:justify-start">
-        <span className={`${accentText} text-xs font-mono tracking-widest`}>
+        <span className={`${accentText} text-xs tracking-widest`}>
           / {phase}
         </span>
         <div
@@ -333,7 +333,7 @@ export function ServiceSection({ id, phase, accent, align = "left" }: Props) {
               >
                 {s.val}
               </p>
-              <p className="text-white/85 text-[11px] uppercase tracking-wider font-mono">
+              <p className="text-white/85 text-[11px] uppercase tracking-wider">
                 {s.lbl}
               </p>
             </motion.div>
@@ -430,7 +430,7 @@ export function ServiceSection({ id, phase, accent, align = "left" }: Props) {
               />
             ))}
           </svg>
-          <p className="text-blue-400/50 text-[9px] text-center tracking-[0.2em] uppercase mt-2 font-mono">
+          <p className="text-blue-400/50 text-[9px] text-center tracking-[0.2em] uppercase mt-2">
             Neural Processing Pipeline
           </p>
         </motion.div>
@@ -445,7 +445,7 @@ export function ServiceSection({ id, phase, accent, align = "left" }: Props) {
             <div
               key={tech}
               className="border border-amber-500/20 bg-amber-500/[0.04] rounded-lg py-2 px-1
-                text-center text-white/80 text-[11px] font-mono"
+                text-center text-white/80 text-[11px]"
             >
               {tech}
             </div>

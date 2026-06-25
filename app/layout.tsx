@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { Syne, DM_Sans } from 'next/font/google'
+import { Space_Grotesk, DM_Sans } from 'next/font/google'
 import { I18nProvider } from '@/context/i18n'
 import Script from 'next/script'
 import './globals.css'
 
-const syne = Syne({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-syne',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-space-grotesk',
   display: 'swap',
 })
 
@@ -139,7 +139,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className={`${syne.variable} ${dmSans.variable} font-sans bg-[#0a0a0a] text-white antialiased`}
+        className={`${spaceGrotesk.variable} ${dmSans.variable} font-sans antialiased`}
+        style={{ background: '#06080f', color: '#f1f5f9' }}
       >
         <I18nProvider>{children}</I18nProvider>
       </body>

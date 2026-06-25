@@ -18,8 +18,8 @@ export function Logo({ size = 'md', className = '' }: LogoProps) {
     >
       <span className="text-white">agent</span>
       <span
-        className="text-sky-400"
-        style={{ textShadow: '0 0 18px rgba(56,189,248,0.45)' }}
+        className="text-indigo-400"
+        style={{ textShadow: '0 0 18px rgba(99,102,241,0.5)' }}
       >
         my
       </span>
