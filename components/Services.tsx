@@ -4,8 +4,6 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useI18n } from "@/context/i18n";
 
-/* ── Icons ─────────────────────────────────────────────── */
-
 function BrainIcon({ className = "" }: { className?: string }) {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className={className}>
@@ -87,142 +85,11 @@ function BackendIcon({ className = "" }: { className?: string }) {
   );
 }
 
-/* ── Neural viz ─────────────────────────────────────────── */
-
-function NeuralViz() {
-  const nodes: [number, number][] = [
-    [20, 30], [70, 10], [70, 30], [70, 50],
-    [130, 10], [130, 30], [130, 50], [180, 30],
-  ];
-  const edges: [number, number, number, number][] = [
-    [20, 30, 70, 10], [20, 30, 70, 30], [20, 30, 70, 50],
-    [70, 10, 130, 10], [70, 10, 130, 30], [70, 30, 130, 30],
-    [70, 50, 130, 30], [70, 50, 130, 50], [130, 10, 180, 30],
-    [130, 30, 180, 30], [130, 50, 180, 30],
-  ];
-  return (
-    <svg viewBox="0 0 200 60" className="w-full max-w-[200px] mx-auto opacity-25" fill="none">
-      {edges.map(([x1, y1, x2, y2], i) => (
-        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#6366f1" strokeWidth="0.8" opacity="0.6" />
-      ))}
-      {nodes.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="3.5" fill="#6366f1" opacity="0.9" />
-      ))}
-    </svg>
-  );
-}
-
-/* ── Card components ───────────────────────────────────── */
-
-interface FeatureCardProps {
-  accent: "indigo" | "amber";
-  eyebrow: string;
-  title: string;
-  description: string;
-  stats: { val: string; lbl: string }[];
-  icon: React.ReactNode;
-  inView: boolean;
-  delay?: number;
-  className?: string;
-}
-
-function FeatureCard({
-  accent, eyebrow, title, description, stats, icon, inView, delay = 0, className = "",
-}: FeatureCardProps) {
-  const isIndigo = accent === "indigo";
-  const accentText = isIndigo ? "text-indigo-400" : "text-amber-400";
-  const border = isIndigo ? "border-indigo-500/[0.18]" : "border-amber-500/[0.18]";
-  const bg = isIndigo ? "bg-indigo-500/[0.04]" : "bg-amber-500/[0.04]";
-  const glow = isIndigo
-    ? "radial-gradient(ellipse 65% 55% at 0% 0%, rgba(99,102,241,0.12), transparent)"
-    : "radial-gradient(ellipse 65% 55% at 0% 0%, rgba(245,158,11,0.10), transparent)";
-  const divider = isIndigo ? "from-indigo-500/30" : "from-amber-500/30";
-  const statBorder = isIndigo ? "border-indigo-500/[0.14]" : "border-amber-500/[0.14]";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative overflow-hidden rounded-2xl border ${border} ${bg} p-7 flex flex-col justify-between min-h-[240px] ${className}`}
-    >
-      {/* Glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: glow }} />
-
-      <div className="relative z-10">
-        <div className="flex items-center gap-2 mb-5">
-          <div className={accentText}>{icon}</div>
-          <span className={`text-[10px] tracking-[0.2em] uppercase ${accentText} opacity-65`}>
-            {eyebrow}
-          </span>
-        </div>
-        <h3 className="font-display text-2xl md:text-3xl font-bold text-white mb-3 leading-tight">
-          {title}
-        </h3>
-        <p className="text-white/65 text-sm leading-relaxed max-w-md">{description}</p>
-      </div>
-
-      <div className="relative z-10 mt-6">
-        <div className={`h-px bg-gradient-to-r ${divider} to-transparent mb-5`} />
-        <div className="flex items-center">
-          {stats.map((s, i) => (
-            <div key={i} className={`flex-1 text-center ${i > 0 ? `border-l ${statBorder}` : ""}`}>
-              <p className={`font-display text-xl font-bold ${accentText}`}>{s.val}</p>
-              <p className="text-white text-[10px] uppercase tracking-wider mt-0.5">{s.lbl}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-interface BentoCardProps {
-  accent: "indigo" | "amber";
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  inView: boolean;
-  delay?: number;
-  className?: string;
-}
-
-function BentoCard({ accent, icon, title, description, inView, delay = 0, className = "" }: BentoCardProps) {
-  const isIndigo = accent === "indigo";
-  const accentText = isIndigo ? "text-indigo-400" : "text-amber-400";
-  const border = isIndigo ? "border-indigo-500/[0.10]" : "border-amber-500/[0.10]";
-  const hoverBorder = isIndigo ? "hover:border-indigo-500/[0.25]" : "hover:border-amber-500/[0.25]";
-  const hoverBg = isIndigo ? "hover:bg-indigo-500/[0.06]" : "hover:bg-amber-500/[0.06]";
-  const iconBg = isIndigo ? "bg-indigo-500/[0.10]" : "bg-amber-500/[0.08]";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative rounded-2xl border ${border} bg-white/[0.02] ${hoverBorder} ${hoverBg}
-        p-6 flex flex-col gap-4 transition-all duration-200 cursor-default ${className}`}
-    >
-      <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center flex-shrink-0 ${accentText}`}>
-        {icon}
-      </div>
-      <div>
-        <h4 className="font-display text-base font-semibold text-white mb-1.5">{title}</h4>
-        <p className="text-white/65 text-sm leading-relaxed">{description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ── Main export ───────────────────────────────────────── */
-
 export function Services() {
   const { t, dir } = useI18n();
   const ref = useRef(null);
-  const inView = useInView(ref, { once: false, margin: "-80px" });
+  const inView = useInView(ref, { once: false, margin: "-60px" });
   const isRTL = dir === "rtl";
-
-  const TECH = ["Next.js", "React", "TypeScript", "Node.js", "Tailwind", "PostgreSQL"];
 
   const aiStats = [
     { val: t("services.ai.stat1_val") as string, lbl: t("services.ai.stat1_lbl") as string },
@@ -236,26 +103,37 @@ export function Services() {
     { val: t("services.web.stat3_val") as string, lbl: t("services.web.stat3_lbl") as string },
   ];
 
+  const aiCaps = [
+    { icon: <AgentIcon className="text-indigo-400" />, title: t("services.ai.cap1_title") as string, desc: t("services.ai.cap1_desc") as string },
+    { icon: <AutoIcon className="text-indigo-400" />, title: t("services.ai.cap2_title") as string, desc: t("services.ai.cap2_desc") as string },
+    { icon: <LLMIcon className="text-indigo-400" />, title: t("services.ai.cap3_title") as string, desc: t("services.ai.cap3_desc") as string },
+  ];
+
+  const webCaps = [
+    { icon: <SaaSIcon className="text-amber-400" />, title: t("services.web.cap1_title") as string, desc: t("services.web.cap1_desc") as string },
+    { icon: <DesignIcon className="text-amber-400" />, title: t("services.web.cap2_title") as string, desc: t("services.web.cap2_desc") as string },
+    { icon: <BackendIcon className="text-amber-400" />, title: t("services.web.cap3_title") as string, desc: t("services.web.cap3_desc") as string },
+  ];
+
   return (
     <section
       id="services"
       className="relative py-28 overflow-hidden"
       style={{ background: "#06080f" }}
     >
-      {/* Background grid */}
+      {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)",
+          backgroundSize: "36px 36px",
         }}
       />
+      {/* Indigo glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse 55% 45% at 70% 20%, rgba(99,102,241,0.09), transparent)",
+          background: "radial-gradient(ellipse 55% 50% at 80% 20%, rgba(99,102,241,0.08), transparent)",
         }}
       />
 
@@ -266,148 +144,135 @@ export function Services() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
+          className="mb-20"
         >
-          <div className="flex items-center justify-center gap-3 mb-5">
+          <div className="flex items-center gap-3 mb-6">
             <span className="text-indigo-400/60 text-xs tracking-[0.22em]">/ 01</span>
-            <div className="h-px w-10 bg-gradient-to-r from-indigo-500/40 to-transparent" />
+            <div className="h-px flex-1 max-w-[60px] bg-gradient-to-r from-indigo-500/40 to-transparent" />
           </div>
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">
-            {isRTL ? "מה אנחנו בונים" : "What We Build"}
+          <h2 className="font-display text-5xl md:text-6xl font-bold text-white leading-tight">
+            {t("services.title") as string}
           </h2>
-          <p className="text-white/60 text-base max-w-md mx-auto leading-relaxed">
-            {isRTL
-              ? "שני תחומי מומחיות. יכולות אמיתיות. שותף אחד."
-              : "Two areas of expertise. Real capabilities. One partner."}
-          </p>
         </motion.div>
 
-        <div className="space-y-3">
+        <div className="space-y-0">
 
-          {/* AI ROW 1 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <FeatureCard
-              className="md:col-span-2"
-              accent="indigo"
-              eyebrow={isRTL ? "בינה מלאכותית" : "Artificial Intelligence"}
-              title={t("services.ai.title") as string}
-              description={t("services.ai.desc") as string}
-              stats={aiStats}
-              icon={<BrainIcon />}
-              inView={inView}
-              delay={0}
-            />
-            <BentoCard
-              accent="indigo"
-              icon={<AgentIcon />}
-              title={t("services.ai.cap1_title") as string}
-              description={t("services.ai.cap1_desc") as string}
-              inView={inView}
-              delay={0.1}
-            />
-          </div>
+          {/* ── AI Block ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="border-t border-white/[0.07] py-16"
+          >
+            <div className="grid md:grid-cols-[1fr_1.6fr] gap-10 lg:gap-20 items-start">
 
-          {/* AI ROW 2 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <BentoCard
-              accent="indigo"
-              icon={<AutoIcon />}
-              title={t("services.ai.cap2_title") as string}
-              description={t("services.ai.cap2_desc") as string}
-              inView={inView}
-              delay={0.15}
-            />
-            <BentoCard
-              accent="indigo"
-              icon={<LLMIcon />}
-              title={t("services.ai.cap3_title") as string}
-              description={t("services.ai.cap3_desc") as string}
-              inView={inView}
-              delay={0.2}
-            />
-            {/* Neural decoration */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="rounded-2xl border border-indigo-500/[0.10] bg-indigo-500/[0.03] p-6
-                flex flex-col items-center justify-center gap-4 min-h-[160px]"
-            >
-              <NeuralViz />
-              <p className="text-white text-[9px] uppercase tracking-[0.24em] text-center">
-                {isRTL ? "עיבוד נוירוני" : "Neural Processing"}
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent my-1" />
-
-          {/* WEB ROW 1 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <FeatureCard
-              className="md:col-span-2"
-              accent="amber"
-              eyebrow={isRTL ? "פיתוח תוכנה" : "Software Development"}
-              title={t("services.web.title") as string}
-              description={t("services.web.desc") as string}
-              stats={webStats}
-              icon={<WebIcon />}
-              inView={inView}
-              delay={0.05}
-            />
-            <BentoCard
-              accent="amber"
-              icon={<SaaSIcon />}
-              title={t("services.web.cap1_title") as string}
-              description={t("services.web.cap1_desc") as string}
-              inView={inView}
-              delay={0.15}
-            />
-          </div>
-
-          {/* WEB ROW 2 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <BentoCard
-              accent="amber"
-              icon={<DesignIcon />}
-              title={t("services.web.cap2_title") as string}
-              description={t("services.web.cap2_desc") as string}
-              inView={inView}
-              delay={0.2}
-            />
-            <BentoCard
-              accent="amber"
-              icon={<BackendIcon />}
-              title={t("services.web.cap3_title") as string}
-              description={t("services.web.cap3_desc") as string}
-              inView={inView}
-              delay={0.25}
-            />
-            {/* Tech stack decoration */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="rounded-2xl border border-amber-500/[0.10] bg-amber-500/[0.03] p-5
-                flex flex-col justify-center gap-3"
-            >
-              <p className="text-amber-400/65 text-[9px] uppercase tracking-[0.24em] text-center mb-1">
-                {isRTL ? "טכנולוגיות" : "Tech Stack"}
-              </p>
-              <div className="grid grid-cols-2 gap-1.5">
-                {TECH.map((tech) => (
-                  <div
-                    key={tech}
-                    className="border border-amber-500/[0.08] bg-amber-500/[0.03] rounded-lg
-                      py-1.5 px-1 text-center text-white/65 text-[11px]"
-                  >
-                    {tech}
+              {/* Left: label + icon + number */}
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-500/[0.08] border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                    <BrainIcon />
                   </div>
+                  <span className="text-indigo-400 text-xs tracking-[0.18em] uppercase">
+                    {isRTL ? "בינה מלאכותית" : "Artificial Intelligence"}
+                  </span>
+                </div>
+                <h3 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+                  {t("services.ai.title") as string}
+                </h3>
+                <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-sm">
+                  {t("services.ai.desc") as string}
+                </p>
+
+                {/* Stats strip */}
+                <div className="border-t border-white/[0.06] pt-6 flex gap-8">
+                  {aiStats.map((s, i) => (
+                    <div key={i}>
+                      <p className="font-display text-2xl font-bold text-indigo-400">{s.val}</p>
+                      <p className="text-white/40 text-xs mt-0.5">{s.lbl}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: capability cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/[0.05] rounded-2xl overflow-hidden">
+                {aiCaps.map((cap, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.55, delay: 0.2 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    className="bg-[#06080f] p-6 hover:bg-white/[0.02] transition-colors"
+                  >
+                    <div className="mb-4">{cap.icon}</div>
+                    <h4 className="font-display text-sm font-semibold text-white mb-2">{cap.title}</h4>
+                    <p className="text-white/50 text-xs leading-relaxed">{cap.desc}</p>
+                  </motion.div>
                 ))}
               </div>
-            </motion.div>
-          </div>
+
+            </div>
+          </motion.div>
+
+          {/* ── Web Block ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="border-t border-white/[0.07] py-16"
+          >
+            <div className="grid md:grid-cols-[1fr_1.6fr] gap-10 lg:gap-20 items-start">
+
+              {/* Left: label + icon + number */}
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/[0.08] border border-amber-500/20 flex items-center justify-center text-amber-400">
+                    <WebIcon />
+                  </div>
+                  <span className="text-amber-400 text-xs tracking-[0.18em] uppercase">
+                    {isRTL ? "פיתוח תוכנה" : "Software Development"}
+                  </span>
+                </div>
+                <h3 className="font-display text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+                  {t("services.web.title") as string}
+                </h3>
+                <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-sm">
+                  {t("services.web.desc") as string}
+                </p>
+
+                {/* Stats strip */}
+                <div className="border-t border-white/[0.06] pt-6 flex gap-8">
+                  {webStats.map((s, i) => (
+                    <div key={i}>
+                      <p className="font-display text-2xl font-bold text-amber-400">{s.val}</p>
+                      <p className="text-white/40 text-xs mt-0.5">{s.lbl}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: capability cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/[0.05] rounded-2xl overflow-hidden">
+                {webCaps.map((cap, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.55, delay: 0.3 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    className="bg-[#06080f] p-6 hover:bg-white/[0.02] transition-colors"
+                  >
+                    <div className="mb-4">{cap.icon}</div>
+                    <h4 className="font-display text-sm font-semibold text-white mb-2">{cap.title}</h4>
+                    <p className="text-white/50 text-xs leading-relaxed">{cap.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+            </div>
+          </motion.div>
+
+          {/* Bottom border */}
+          <div className="border-t border-white/[0.07]" />
 
         </div>
       </div>
