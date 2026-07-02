@@ -6,7 +6,7 @@
   },
   "hero": {
     "headline": "Intelligence That Works. Software That Scales.",
-    "sub": "Agentmy builds custom AI systems and high-performance software that transform how your business operates — so you can work smarter, faster, and at lower cost.",
+    "sub": "Custom AI agents and business software, built from scratch around how your company actually works.",
     "cta_services": "See What We Build",
     "cta_contact": "Start a Project"
   },
@@ -14,30 +14,27 @@
     "title": "What We Build",
     "ai": {
       "title": "AI Solutions",
-      "desc": "We build intelligent agents and automation systems that work inside your organization — reading information, making decisions, and taking action without requiring constant human input. The result: fewer bottlenecks, higher throughput, and lower operational costs.",
-      "bullets": ["Autonomous AI agents for complex workflows", "LLM integrations — GPT-4, Claude, Gemini", "Intelligent data processing & business automation"]
+      "desc": "Intelligent agents and automation that read, decide, and act inside your business. Fewer bottlenecks, lower operating costs."
     },
     "web": {
       "title": "Software Development",
-      "desc": "From SaaS platforms to landing pages that generate customers — we build fast, reliable software that your users will love and your business can grow on. Clean code, sound architecture, zero shortcuts.",
-      "bullets": ["SaaS platforms & web applications", "High-converting landing pages", "APIs, integrations & backend infrastructure"]
+      "desc": "From SaaS platforms to landing pages that generate customers. Fast, reliable software your business can grow on."
     }
   },
   "about": {
     "title": "Who We Are",
-    "text": "Agentmy is a technology company focused on one thing: building AI systems and software that generate real business results. We don't sell ready-made templates — every project is designed from scratch according to the goals, constraints, and specific growth targets of our clients.",
-    "badges": ["AI at the Core", "Fast Delivery", "Modern Architecture"]
+    "text": "Agentmy is a technology company focused on one thing: building AI systems and software that genuinely move the needle. No templates, no generic solutions. Every project is designed from scratch around your goals, constraints, and growth targets."
   },
   "contact": {
     "title": "Let's Build Together",
-    "name": "Full Name",
-    "email": "Email Address",
+    "name": "Your Name",
+    "email": "Your Email",
     "message": "Tell us about your project",
     "submit": "Send Message",
     "success": "Message received. We'll be in touch within 24 hours."
   },
   "footer": {
-    "tagline": "Building the intelligent engine of your business.",
+    "tagline": "Building the intelligence layer of your business.",
     "copy": "© 2025 Agentmy. All rights reserved."
   }
 }

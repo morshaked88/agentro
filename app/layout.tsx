@@ -1,20 +1,22 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, DM_Sans } from 'next/font/google'
+import { Rubik, Heebo } from 'next/font/google'
 import { I18nProvider } from '@/context/i18n'
 import Script from 'next/script'
 import './globals.css'
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
+// Both families ship a Hebrew subset, so the HE locale renders in the brand
+// typeface instead of falling back to the system font.
+const rubik = Rubik({
+  subsets: ['latin', 'hebrew'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-space-grotesk',
+  variable: '--font-rubik',
   display: 'swap',
 })
 
-const dmSans = DM_Sans({
-  subsets: ['latin'],
+const heebo = Heebo({
+  subsets: ['latin', 'hebrew'],
   weight: ['400', '500', '700'],
-  variable: '--font-dm-sans',
+  variable: '--font-heebo',
   display: 'swap',
 })
 
@@ -29,7 +31,7 @@ export const metadata: Metadata = {
     template: '%s | Agentmy',
   },
   description:
-    'Agentmy בונה מערכות AI מותאמות אישית, סוכנים אוטונומיים ותוכנה עסקית שמשנות את אופן הפעולה של הארגון שלכם — לעבוד חכם יותר, מהיר יותר ובעלות תפעול נמוכה יותר.',
+    'Agentmy בונה מערכות AI מותאמות אישית, סוכנים אוטונומיים ותוכנה עסקית שמשנות את אופן הפעולה של הארגון שלכם: לעבוד חכם יותר, מהיר יותר ובעלות תפעול נמוכה יותר.',
   keywords: [
     'פתרונות AI',
     'בינה מלאכותית לעסקים',
@@ -76,7 +78,7 @@ export const metadata: Metadata = {
         url: '/agento-logo.png',
         width: 2816,
         height: 1536,
-        alt: 'Agentmy — פתרונות AI ופיתוח תוכנה',
+        alt: 'Agentmy | פתרונות AI ופיתוח תוכנה',
       },
     ],
   },
@@ -138,10 +140,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body
-        className={`${spaceGrotesk.variable} ${dmSans.variable} font-sans antialiased`}
-        style={{ background: '#06080f', color: '#f1f5f9' }}
-      >
+      <body className={`${rubik.variable} ${heebo.variable} font-sans antialiased`}>
         <I18nProvider>{children}</I18nProvider>
       </body>
     </html>

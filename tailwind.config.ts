@@ -1,5 +1,9 @@
 import type { Config } from 'tailwindcss'
 
+/**
+ * Shape system: buttons = pill (rounded-full), cards/media = rounded-2xl,
+ * inputs = underline (no radius). One accent: emerald.
+ */
 const config: Config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,15 +14,18 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ['var(--font-space-grotesk)', 'sans-serif'],
-        sans: ['var(--font-dm-sans)', 'sans-serif'],
+        display: ['var(--font-rubik)', 'sans-serif'],
+        sans: ['var(--font-heebo)', 'sans-serif'],
       },
       colors: {
-        brand: {
-          bg: '#06080f',
-          surface: '#0c0f1a',
-          indigo: '#6366f1',
-          amber: '#f59e0b',
+        base: {
+          DEFAULT: '#0c0c0e',
+          raised: '#131316',
+          line: 'rgba(255,255,255,0.08)',
+        },
+        accent: {
+          DEFAULT: '#34d399',
+          dim: '#10b981',
         },
       },
     },

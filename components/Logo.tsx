@@ -16,13 +16,8 @@ export function Logo({ size = 'md', className = '' }: LogoProps) {
     <span
       className={`font-display font-bold tracking-tight select-none ${sizeMap[size]} ${className}`}
     >
-      <span className="text-white">agent</span>
-      <span
-        className="text-indigo-400"
-        style={{ textShadow: '0 0 18px rgba(99,102,241,0.5)' }}
-      >
-        my
-      </span>
+      <span className="text-zinc-100">agent</span>
+      <span className="text-accent">my</span>
     </span>
   )
 }

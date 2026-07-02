@@ -1,180 +1,94 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import { useI18n } from "@/context/i18n";
-import FlowWave from "@/components/ui/flow-wave";
+import { useI18n } from '@/context/i18n'
+import FlowWave from '@/components/ui/flow-wave'
 
 export function Hero() {
-  const { t, dir } = useI18n();
-  const headline = t("hero.headline") as string;
-  const isRTL = dir === "rtl";
+  const { t, dir } = useI18n()
+  const headline = t('hero.headline') as string
 
   const parts = headline
-    .split(".")
+    .split('.')
     .map((s) => s.trim())
-    .filter(Boolean);
-
-  const stats = [
-    { val: "10×", lbl: isRTL ? "מהירות תפוקה" : "Faster Output" },
-    { val: "24/7", lbl: isRTL ? "תמיד זמין" : "Always On" },
-    { val: "100%", lbl: isRTL ? "מותאם אישית" : "Custom-Built" },
-  ];
+    .filter(Boolean)
 
   const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: "#06080f" }}
+      className="relative min-h-[100dvh] flex items-center bg-base overflow-hidden"
     >
-      {/* Flow Wave background */}
+      {/* Flow Wave particle field */}
       <FlowWave className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Indigo top-center brand overlay */}
+      {/* Scrim behind the copy column so text stays readable over the particles */}
+      <div className="absolute inset-0 z-[1] bg-base/50 sm:bg-transparent pointer-events-none" />
       <div
-        className="absolute inset-0 pointer-events-none z-[1]"
+        className="absolute inset-0 z-[1] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 80% 55% at 50% -15%, rgba(99,102,241,0.20), transparent)",
+            dir === 'rtl'
+              ? 'linear-gradient(to left, rgba(4,10,7,0.82) 0%, rgba(4,10,7,0.55) 35%, transparent 65%)'
+              : 'linear-gradient(to right, rgba(4,10,7,0.82) 0%, rgba(4,10,7,0.55) 35%, transparent 65%)',
         }}
       />
 
-      {/* Amber bottom-left accent */}
+      {/* Blend the scene into the page background below */}
       <div
-        className="absolute inset-0 pointer-events-none z-[1]"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 40% at -5% 105%, rgba(245,158,11,0.07), transparent)",
-        }}
+        className="absolute bottom-0 inset-x-0 h-40 z-[1] pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, transparent, #0c0c0e)' }}
       />
 
-      {/* Side & top vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none z-[1]"
-        style={{
-          background:
-            "radial-gradient(ellipse 100% 75% at 50% 50%, transparent 35%, #06080f 90%)",
-        }}
-      />
-
-      {/* Bottom blend — fades animation into next section */}
-      <div
-        className="absolute bottom-0 inset-x-0 h-52 pointer-events-none z-[2]"
-        style={{
-          background: "linear-gradient(to bottom, transparent, #06080f 85%)",
-        }}
-      />
-
-      {/* Content */}
-      <div
-        className="relative z-10 max-w-5xl mx-auto px-6 w-full text-center pt-20 pb-16"
-        dir={dir}
-      >
-        {/* Headline */}
-        <div className="mb-7">
-          {parts.map((part, i) => (
-            <div
-              key={i}
-              className="hero-in-tall"
-              style={{ animationDelay: `${80 + i * 150}ms` }}
-            >
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-24 pb-16" dir={dir}>
+        <div className="max-w-2xl">
+          <h1 className="mb-6">
+            {parts.map((part, i) => (
               <span
-                className={`block font-display font-bold leading-[1.04] tracking-tight
-                  text-[2.2rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem]
-                  ${
-                    i === parts.length - 1
-                      ? "bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-400 bg-clip-text text-transparent"
-                      : "text-white"
-                  }`}
+                key={i}
+                className="rise-in block font-display font-bold tracking-tight leading-[1.06]
+                  text-4xl sm:text-5xl lg:text-6xl"
+                style={{ animationDelay: `${80 + i * 140}ms` }}
               >
-                {part}
-                {i < parts.length - 1 ? "." : ""}
+                <span className={i === parts.length - 1 ? 'text-accent' : 'text-zinc-100'}>
+                  {part}.
+                </span>
               </span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </h1>
 
-        {/* Subtext */}
-        <p
-          className="hero-in text-white text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed"
-          style={{ animationDelay: "480ms", animationDuration: "0.65s" }}
-        >
-          {t("hero.sub") as string}
-        </p>
-
-        {/* CTAs */}
-        <div
-          className="hero-in flex flex-col sm:flex-row items-center justify-center gap-3 mb-16"
-          style={{ animationDelay: "620ms", animationDuration: "0.55s" }}
-        >
-          <button
-            onClick={() => scrollTo("services")}
-            className="group relative w-full sm:w-auto overflow-hidden px-8 py-3.5
-              bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm
-              rounded-xl cursor-pointer transition-all duration-200
-              shadow-[0_0_35px_rgba(99,102,241,0.30)]
-              hover:shadow-[0_0_55px_rgba(99,102,241,0.50)]"
+          <p
+            className="rise-in text-zinc-200 text-base md:text-lg leading-relaxed max-w-md mb-10"
+            style={{ animationDelay: '400ms' }}
           >
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              {t("hero.cta_services") as string}
-              <motion.span
-                animate={{ x: isRTL ? [0, -3, 0] : [0, 3, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                {isRTL ? "←" : "→"}
-              </motion.span>
-            </span>
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          </button>
+            {t('hero.sub') as string}
+          </p>
 
-          <button
-            onClick={() => scrollTo("contact")}
-            className="w-full sm:w-auto px-8 py-3.5 border border-white/30 hover:border-white/50
-              bg-white/[0.06] hover:bg-white/[0.10]
-              text-white font-medium text-sm
-              rounded-xl cursor-pointer transition-all duration-200"
+          <div
+            className="rise-in flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
+            style={{ animationDelay: '540ms' }}
           >
-            {t("hero.cta_contact") as string}
-          </button>
-        </div>
-
-        {/* Stats row */}
-        <div
-          className="hero-in flex justify-center"
-          style={{ animationDelay: "820ms", animationDuration: "0.65s" }}
-        >
-        <div className="flex items-center rounded-2xl border border-white/[0.07] bg-white/[0.025] backdrop-blur-sm overflow-hidden">
-          {stats.map((s, i) => (
-            <div
-              key={i}
-              className={`text-center px-4 py-3 sm:px-8 sm:py-4 ${i > 0 ? "border-l border-white/[0.07]" : ""}`}
+            <button
+              onClick={() => scrollTo('services')}
+              className="px-7 py-3.5 bg-accent hover:bg-accent-dim text-zinc-950
+                font-semibold text-sm rounded-full cursor-pointer
+                transition-colors duration-200 active:scale-[0.98] whitespace-nowrap"
             >
-              <p className="font-display text-2xl font-bold text-white">
-                {s.val}
-              </p>
-              <p className="text-white text-[10px] mt-0.5 tracking-[0.18em] uppercase font">
-                {s.lbl}
-              </p>
-            </div>
-          ))}
+              {t('hero.cta_services') as string}
+            </button>
+            <button
+              onClick={() => scrollTo('contact')}
+              className="px-7 py-3.5 border border-zinc-600 hover:border-zinc-400
+                bg-base/40 backdrop-blur-sm
+                text-zinc-100 font-medium text-sm rounded-full cursor-pointer
+                transition-colors duration-200 active:scale-[0.98] whitespace-nowrap"
+            >
+              {t('hero.cta_contact') as string}
+            </button>
+          </div>
         </div>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div
-        className="hero-fade absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-10"
-        style={{ animationDelay: "1200ms" }}
-      >
-        <div className="w-px h-10 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-        <div className="w-1 h-1 rounded-full bg-white/25" />
       </div>
     </section>
-  );
+  )
 }

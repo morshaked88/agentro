@@ -1,167 +1,100 @@
-"use client";
+'use client'
 
-import { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useI18n } from "@/context/i18n";
+import { useState } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { EnvelopeSimple, LinkedinLogo, GithubLogo, CheckCircle, CircleNotch } from '@phosphor-icons/react'
+import { useI18n } from '@/context/i18n'
+
+const EASE = [0.16, 1, 0.3, 1] as const
 
 export function Contact() {
-  const { t, dir } = useI18n();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: false, margin: "-80px" });
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const isRTL = dir === "rtl";
+  const { t, dir } = useI18n()
+  const reduce = useReducedMotion()
+  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setSubmitted(true);
-  };
+    e.preventDefault()
+    setSubmitting(true)
+    await new Promise((r) => setTimeout(r, 900))
+    setSubmitting(false)
+    setSubmitted(true)
+  }
 
   const inputBase =
-    "w-full bg-transparent border-b border-white/[0.12] focus:border-indigo-500/60 px-0 py-3.5 text-white text-sm placeholder-white/35 outline-none transition-colors duration-200";
+    'w-full bg-transparent border-b border-zinc-700 focus:border-accent px-0 py-3.5 text-zinc-100 text-sm outline-none transition-colors duration-200'
 
   return (
-    <section
-      id="contact"
-      className="relative py-28 overflow-hidden"
-      style={{ background: "#06080f" }}
-    >
-      {/* Grid background */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      />
-      {/* Indigo glow left */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 60% at 20% 50%, rgba(99,102,241,0.08), transparent)",
-        }}
-      />
-      {/* Amber glow right */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 40% 40% at 85% 50%, rgba(245,158,11,0.04), transparent)",
-        }}
-      />
-
-      <div ref={ref} className="relative z-10 max-w-6xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-20 items-start" dir={dir}>
-
-          {/* ── LEFT: Info ── */}
+    <section id="contact" className="relative py-28 bg-base border-t border-base-line">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start" dir={dir}>
+          {/* Info */}
           <motion.div
-            initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            initial={reduce ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.65, ease: EASE }}
           >
-            {/* Section marker */}
-            <div className="flex items-center gap-3 mb-8">
-              <span className="text-indigo-400/60 text-xs tracking-[0.22em]">/ 03</span>
-              <div className="flex-1 h-px bg-gradient-to-r from-indigo-500/35 to-transparent" />
-            </div>
-
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-white leading-tight mb-5">
-              {t("contact.title") as string}
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-zinc-100 tracking-tight mb-5">
+              {t('contact.title') as string}
             </h2>
 
-            <p className="text-white/65 text-sm leading-relaxed mb-10 max-w-xs">
-              {isRTL
-                ? "שלחו לנו הודעה וניצור איתכם קשר תוך 24 שעות."
-                : "Send us a message and we'll get back to you within 24 hours."}
+            <p className="text-zinc-400 leading-relaxed mb-10 max-w-sm">
+              {t('contact.sub') as string}
             </p>
 
-            {/* Email */}
-            <motion.a
+            <a
               href="mailto:info@agentmy.co.il"
-              className="group flex items-center gap-3 mb-8 cursor-pointer w-fit"
-              whileHover={{ x: isRTL ? -4 : 4 }}
-              transition={{ duration: 0.2 }}
+              className="group inline-flex items-center gap-3 mb-10 cursor-pointer"
             >
-              <div
-                className="w-9 h-9 rounded-xl border border-indigo-500/20 bg-indigo-500/[0.06]
-                flex items-center justify-center flex-shrink-0"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                  <polyline points="22,6 12,13 2,6" />
-                </svg>
-              </div>
-              <span className="text-white/70 group-hover:text-indigo-400 text-sm transition-colors duration-200">
+              <EnvelopeSimple size={20} className="text-accent flex-shrink-0" />
+              <span className="text-zinc-300 group-hover:text-accent text-sm transition-colors duration-200">
                 info@agentmy.co.il
               </span>
-              <span className="text-white group-hover:text-indigo-400 text-sm transition-colors duration-200">
-                {isRTL ? "←" : "→"}
-              </span>
-            </motion.a>
+            </a>
 
-            {/* Social links */}
-            <div className="flex gap-2.5">
+            <div className="flex gap-3">
               <a
                 href="#"
                 aria-label="LinkedIn"
-                className="w-9 h-9 border border-white/[0.10] hover:border-indigo-500/35 rounded-xl
-                  flex items-center justify-center text-white/55 hover:text-indigo-400
-                  transition-all duration-200 cursor-pointer bg-white/[0.02]"
+                className="w-10 h-10 border border-base-line hover:border-zinc-600 rounded-full
+                  flex items-center justify-center text-zinc-400 hover:text-zinc-100
+                  transition-colors duration-200 cursor-pointer"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-                  <circle cx="4" cy="4" r="2" />
-                </svg>
+                <LinkedinLogo size={18} />
               </a>
               <a
                 href="#"
                 aria-label="GitHub"
-                className="w-9 h-9 border border-white/[0.10] hover:border-white/25 rounded-xl
-                  flex items-center justify-center text-white/55 hover:text-white
-                  transition-all duration-200 cursor-pointer bg-white/[0.02]"
+                className="w-10 h-10 border border-base-line hover:border-zinc-600 rounded-full
+                  flex items-center justify-center text-zinc-400 hover:text-zinc-100
+                  transition-colors duration-200 cursor-pointer"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path fillRule="evenodd" clipRule="evenodd"
-                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                  />
-                </svg>
+                <GithubLogo size={18} />
               </a>
             </div>
           </motion.div>
 
-          {/* ── RIGHT: Form ── */}
+          {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: isRTL ? -30 : 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0 }}
-            transition={{ duration: 0.7, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            initial={reduce ? false : { opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
           >
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
                   key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
+                  initial={{ opacity: 0, scale: 0.97 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.45 }}
-                  className="border border-indigo-500/20 rounded-2xl p-14 text-center bg-indigo-500/[0.04]"
+                  transition={{ duration: 0.4 }}
+                  className="border border-base-line rounded-2xl p-14 text-center bg-base-raised"
                 >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 220, damping: 15, delay: 0.1 }}
-                    className="w-14 h-14 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-5 border border-indigo-500/20"
-                  >
-                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="#6366f1" strokeWidth="2.5">
-                      <path d="M5 14l7 7 11-14" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </motion.div>
-                  <p className="text-indigo-300 text-base font-medium">
-                    {t("contact.success") as string}
+                  <CheckCircle size={44} weight="light" className="text-accent mx-auto mb-4" />
+                  <p className="text-zinc-100 text-base font-medium">
+                    {t('contact.success') as string}
                   </p>
                 </motion.div>
               ) : (
@@ -172,14 +105,15 @@ export function Contact() {
                   className="space-y-8"
                 >
                   {[
-                    { key: "name", type: "text", label: t("contact.name") as string },
-                    { key: "email", type: "email", label: t("contact.email") as string },
+                    { key: 'name', type: 'text', label: t('contact.name') as string },
+                    { key: 'email', type: 'email', label: t('contact.email') as string },
                   ].map(({ key, type, label }) => (
                     <div key={key}>
-                      <label className="block text-white/55 text-[10px] uppercase tracking-[0.16em] mb-2">
+                      <label htmlFor={`contact-${key}`} className="block text-zinc-400 text-xs font-medium mb-2">
                         {label}
                       </label>
                       <input
+                        id={`contact-${key}`}
                         type={type}
                         required
                         value={form[key as keyof typeof form]}
@@ -189,10 +123,11 @@ export function Contact() {
                     </div>
                   ))}
                   <div>
-                    <label className="block text-white/55 text-[10px] uppercase tracking-[0.16em] mb-2">
-                      {t("contact.message") as string}
+                    <label htmlFor="contact-message" className="block text-zinc-400 text-xs font-medium mb-2">
+                      {t('contact.message') as string}
                     </label>
                     <textarea
+                      id="contact-message"
                       required
                       rows={4}
                       value={form.message}
@@ -203,40 +138,22 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full relative group overflow-hidden bg-indigo-600 hover:bg-indigo-500
-                      text-white font-medium py-4 rounded-xl transition-all duration-200
-                      cursor-pointer disabled:opacity-60 text-sm
-                      shadow-[0_0_30px_rgba(99,102,241,0.25)]
-                      hover:shadow-[0_0_50px_rgba(99,102,241,0.42)]"
+                    className="w-full flex items-center justify-center gap-2 bg-accent hover:bg-accent-dim
+                      text-zinc-950 font-semibold py-4 rounded-full transition-colors duration-200
+                      cursor-pointer disabled:opacity-60 text-sm active:scale-[0.98]"
                   >
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      {submitting ? (
-                        <motion.span
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                          className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full block"
-                        />
-                      ) : (
-                        <>
-                          {t("contact.submit") as string}
-                          <motion.span
-                            animate={{ x: isRTL ? [0, -3, 0] : [0, 3, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                          >
-                            {isRTL ? "←" : "→"}
-                          </motion.span>
-                        </>
-                      )}
-                    </span>
-                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                    {submitting ? (
+                      <CircleNotch size={18} className="animate-spin" />
+                    ) : (
+                      t('contact.submit') as string
+                    )}
                   </button>
                 </motion.form>
               )}
             </AnimatePresence>
           </motion.div>
-
         </div>
       </div>
     </section>
-  );
+  )
 }

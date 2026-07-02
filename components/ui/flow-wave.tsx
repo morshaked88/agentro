@@ -29,20 +29,20 @@ export default function FlowWave({ className = "" }: FlowWaveProps) {
 
       if (destroyed) return
 
-      // ── Constants ──────────────────────────────────────────────────
-      const bgColor         = "#06080f"
-      const flameColor      = "#6366f1"   // indigo-500
-      const flameColor2     = "#c7d2fe"   // indigo-200
-      const flameAmt        = 0.10        // reduced — was brightening the frame
-      const atmoColor       = "#a5b4fc"   // indigo-300
+      // ── Constants (Flow Wave spec, emerald palette) ────────────────
+      const bgColor         = "#02160c"
+      const flameColor      = "#0aff7f"
+      const flameColor2     = "#aef0c0"
+      const flameAmt        = 0.2
+      const atmoColor       = "#7affbf"
       const atmoCount       = 300
       const atmoSize        = 24
       const atmoSpeed       = 1.0
-      const colorLow        = "#06080f"
-      const colorHigh       = "#818cf8"   // indigo-400
-      const opacity         = 0.20        // reduced — less particle brightness
+      const colorLow        = "#02160c"
+      const colorHigh       = "#34e89a"
+      const opacity         = 0.26
       const pointSize       = 5.5
-      const brightness      = 0.32        // reduced — keep wave subtle
+      const brightness      = 0.45
       const waveHeight      = 3
       const flow            = 1
       const tilt            = 0
@@ -76,8 +76,8 @@ export default function FlowWave({ className = "" }: FlowWaveProps) {
 
       // ── Scene & camera ─────────────────────────────────────────────
       const scene = new THREE.Scene()
-      scene.background = new THREE.Color(0x06080f)
-      scene.fog = new THREE.Fog(0x06080f, 0, 15)
+      scene.background = new THREE.Color(0x000000)
+      scene.fog = new THREE.Fog(0x000000, 0, 15)
 
       const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 400)
       camera.position.set(0, camStartY, camStartZ)
@@ -285,7 +285,7 @@ void main(){
 
       const composer = new EffectComposer(renderer)
       composer.addPass(new RenderPass(scene, camera))
-      composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.18, 0.25, 0))
+      composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.4, 0.55, 0))
       composer.addPass(new ShaderPass(GammaCorrectionShader))
       composer.addPass(finalPass)
 
